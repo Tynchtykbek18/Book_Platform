@@ -1,8 +1,8 @@
 from rest_framework import viewsets, generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from utils.permissions import IsOwner
-from .models import Category, Book
+from .models import Book
 from .serializers import BookSerializer
 
 
