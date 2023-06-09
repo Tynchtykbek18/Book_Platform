@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 
 from utils.permissions import IsOwner
 from .models import CustomUser
-from .serializers import UserSerializer, UserRegister
+from .serializers import UserSerializer
 
 
 class UserList(generics.ListAPIView):
