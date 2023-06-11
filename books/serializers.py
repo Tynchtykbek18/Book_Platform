@@ -1,24 +1,14 @@
 from rest_framework import serializers
-from .models import Book
-from ratings.models import Grade, Comment
 
-
-class GradeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Grade
-        fields = ('owner', 'grade')
-
-
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = ('owner', 'comment_text')
+from ratings.serializers import GradeSerializer, CommentSerializer
+from .models import Book, ReadLater
 
 
 class BookSerializer(serializers.ModelSerializer):
     grades = GradeSerializer(many=True, read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
     average_grade = serializers.SerializerMethodField()
+    book_file = serializers.FileField(max_length=None, use_url=True)
 
     def get_average_grade(self, obj):
         # Расчет средней оценки книги
@@ -35,3 +25,9 @@ class BookSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'owner', 'title', 'description', 'author', 'cover', 'category', 'book_file', 'book_audio', 'grades',
             'comments', 'average_grade')
+
+
+class ReadlaterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReadLater
+        fields = '__all__'

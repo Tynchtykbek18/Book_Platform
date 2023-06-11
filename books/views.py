@@ -1,16 +1,14 @@
-from rest_framework import viewsets, generics
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-
+from rest_framework import viewsets, permissions, generics
+from .models import Book, ReadLater
+from accounts.models import CustomUser
+from .serializers import BookSerializer, ReadlaterSerializer
 from utils.permissions import IsOwner
-from .models import Book
-from .serializers import BookSerializer
 
 
-class BookView(viewsets.ReadOnlyModelViewSet):
+class Booklist(viewsets.ReadOnlyModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = (IsAuthenticated, )
-
+    permission_classes = (permissions.IsAuthenticated, )
 
 
 class BookDetail(viewsets.ModelViewSet):
@@ -20,6 +18,15 @@ class BookDetail(viewsets.ModelViewSet):
 
 
 class BookCreate(generics.CreateAPIView):
-    queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (permissions.IsAuthenticated, )
+
+
+class AddToLater(generics.CreateAPIView):
+    serializer_class = ReadlaterSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+
+
+class ReadToLaterDetail(viewsets.ModelViewSet):
+    user = CustomUser.objects.get(pk=pk)
+    queryset = ReadLater.objects.filter()

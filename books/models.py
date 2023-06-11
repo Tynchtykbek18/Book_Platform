@@ -16,9 +16,13 @@ class Book(models.Model):
     author = models.CharField(max_length=50, verbose_name='автор книги')
     cover = models.ImageField(verbose_name='обложка книги', upload_to='static/book/covers')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='books')
-    book_file = models.FileField(blank=True, verbose_name=' книга в PDF формате', upload_to='static/book/pdf')
+    book_file = models.FileField(blank=True, verbose_name=' книга в PDF формате', upload_to='./pdf')
     book_audio = models.FileField(blank=True, verbose_name='книга в аудио формате', upload_to='static/book/audio')
 
     def __str__(self):
         return self.title
 
+
+class ReadLater(models.Model):
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='read_later_user')
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='read_later_book')
