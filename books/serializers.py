@@ -9,9 +9,9 @@ class BookSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     average_grade = serializers.SerializerMethodField()
     book_file = serializers.FileField(max_length=None, use_url=True)
+    owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     def get_average_grade(self, obj):
-        # Расчет средней оценки книги
         grades = obj.grades.all()
         if grades:
             total_grades = sum([grade.grade for grade in grades])
@@ -22,12 +22,31 @@ class BookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = (
-            'id', 'owner', 'title', 'description', 'author', 'cover', 'category', 'book_file', 'book_audio', 'grades',
-            'comments', 'average_grade')
+        fields = '__all__'
+
+    def create(self, validated_data):
+        validated_data['owner'] = self.context['request'].user
+        return super().create(validated_data)
 
 
-class ReadlaterSerializer(serializers.ModelSerializer):
+class ReadLaterSerializer(serializers.ModelSerializer):
+    book = BookSerializer()
+
+    class Meta:
+        model = ReadLater
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            user = request.user
+            if instance.owner == user:
+                return super().to_representation(instance)
+
+        return {}
+
+
+class AddToReadLater(serializers.ModelSerializer):
     class Meta:
         model = ReadLater
         fields = '__all__'

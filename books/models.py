@@ -18,6 +18,7 @@ class Book(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='books')
     book_file = models.FileField(blank=True, verbose_name=' книга в PDF формате', upload_to='./pdf')
     book_audio = models.FileField(blank=True, verbose_name='книга в аудио формате', upload_to='static/book/audio')
+    read_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title

@@ -14,7 +14,7 @@ class UserList(generics.ListAPIView):
     permission_classes = (IsAdminUser, )
 
 
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+class UserDetail(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsOwner, )

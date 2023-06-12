@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-z^4)1zdqxamu^@uuruh(4mt-ef4x)9)yy$#a^1$o5)e7w2noeq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0']
+# ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -72,11 +73,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'root.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -84,10 +80,18 @@ DATABASES = {
         'NAME': 'book_platform',
         'USER': 'tynchtykbek',
         'PASSWORD': 'tynchtyk',
-        'HOST': '127.0.0.1',  # Обычно 'localhost' или '127.0.0.1'
-        'PORT': '5432',  # Обычно '5432'
+        'HOST': 'db',  # If the database is running on the same machine
+        'PORT': '5432',  # Port number of your PostgreSQL installation
     }
 }
+
+WSGI_APPLICATION = 'root.wsgi.application'
+
+
+# Database
+# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+
+
 
 
 # Password validation
@@ -124,7 +128,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=20),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
